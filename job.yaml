@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job
+spec:
+  template:
+    spec:
+      containers:
+      - name: job-container
+        image: busybox
+        command: ["/bin/sh", "-c"]
+        args:
+          - echo "Large Scale Computing - Lab 5" > /mnt/data/index.html
+        volumeMounts:
+        - mountPath: /mnt/data
+          name: web-content
+      volumes:
+      - name: web-content
+        persistentVolumeClaim:
+          claimName: nfs-pvc
+      restartPolicy: OnFailure
